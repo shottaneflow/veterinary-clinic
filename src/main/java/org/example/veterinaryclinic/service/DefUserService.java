@@ -40,6 +40,11 @@ public class DefUserService implements UserService {
     }
 
     @Override
+    public VetUser findByUsername(String username) {
+        return this.verUserRepo.findByUsername(username).orElse(null);
+    }
+
+    @Override
     public void addUser(VetUser user) {
         VetUser vetUser=this.verUserRepo.findByUsername(user.getUsername())
                 .orElse(null);
@@ -51,6 +56,11 @@ public class DefUserService implements UserService {
         auth.setAuthority("ROLE_USER");
         user.addAuthorities(auth);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        this.verUserRepo.save(user);
+    }
+
+    @Override
+    public void updateUser(VetUser user) {
         this.verUserRepo.save(user);
     }
 }

@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -40,8 +41,10 @@ public class SecurityBeans {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authorize -> authorize
-
-                        .anyRequest().permitAll()
+                        .requestMatchers("/auth-api/**").permitAll()
+                        .requestMatchers("/reg-api/**").permitAll()
+                        .requestMatchers("/admin-api/**").hasRole("ADMIN")
+                        .anyRequest().authenticated()
                 )
                 .sessionManagement(sessionManagement ->
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -49,7 +52,7 @@ public class SecurityBeans {
                 .exceptionHandling(exceptionHandling->exceptionHandling
                         .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
                 )
-               // .addFilterBefore(corsFilter(), UsernamePasswordAuthenticationFilter.class) // Добавляем CORS фильтр
+                .addFilterBefore(corsFilter(), UsernamePasswordAuthenticationFilter.class) // Добавляем CORS фильтр
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
         ;;
@@ -84,9 +87,11 @@ public class SecurityBeans {
         };
     }
 
+
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
+
 
 }
