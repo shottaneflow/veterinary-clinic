@@ -10,4 +10,5 @@ public interface VetService {
     List<Vet> getVets();
     void updateVet(Vet vet);
     void deleteVet(UUID id);
+    Vet getVetById(UUID id);
 }

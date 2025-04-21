@@ -33,4 +33,9 @@ public class DefVetService implements VetService {
     public void deleteVet(UUID id) {
         this.vetRepo.deleteById(id);
     }
+
+    @Override
+    public Vet getVetById(UUID id) {
+        return this.vetRepo.findById(id).orElse(null);
+    }
 }

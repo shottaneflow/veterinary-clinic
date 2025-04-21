@@ -1,10 +1,12 @@
 package org.example.veterinaryclinic.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 public class VetUser {
@@ -19,6 +21,7 @@ public class VetUser {
     private String phoneNumber;
 
     @OneToMany(mappedBy = "vetUser", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Animal> pets;
 
     @ManyToMany
@@ -35,9 +38,6 @@ public class VetUser {
         this.authorities.add(authority);
     }
 
-    public String getId() {
-        return this.id;
-    }
 
     public String getUsername() {
         return this.username;
@@ -67,9 +67,6 @@ public class VetUser {
         return this.authorities;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public void setUsername(String username) {
         this.username = username;
@@ -161,5 +158,13 @@ public class VetUser {
 
     public String toString() {
         return "VetUser(id=" + this.getId() + ", username=" + this.getUsername() + ", password=" + this.getPassword() + ", firstName=" + this.getFirstName() + ", email=" + this.getEmail() + ", phoneNumber=" + this.getPhoneNumber() + ", pets=" + this.getPets() + ", authorities=" + this.getAuthorities() + ")";
+    }
+
+    public String getId() {
+        return this.id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

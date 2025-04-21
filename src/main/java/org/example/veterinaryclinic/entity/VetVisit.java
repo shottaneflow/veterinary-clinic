@@ -3,16 +3,17 @@ package org.example.veterinaryclinic.entity;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Entity
 public class VetVisit {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    private UUID id;
 
     private LocalDate visitDate;
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "animal_id", nullable = false)
     private Animal animal;
     @ManyToOne
@@ -22,7 +23,7 @@ public class VetVisit {
     public VetVisit() {
     }
 
-    public String getId() {
+    public UUID getId() {
         return this.id;
     }
 
@@ -38,7 +39,7 @@ public class VetVisit {
         return this.vet;
     }
 
-    public void setId(String id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

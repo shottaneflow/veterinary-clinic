@@ -41,6 +41,7 @@ public class SecurityBeans {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/", "/index.html", "/static/**", "/*.js", "/*.css", "/*.ico", "/assets/**").permitAll()
                         .requestMatchers("/auth-api/**").permitAll()
                         .requestMatchers("/reg-api/**").permitAll()
                         .requestMatchers("/admin-api/**").hasRole("ADMIN")
